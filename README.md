@@ -1,6 +1,4 @@
 
-login.sh
-```sh# Sisop-1-2025-IT07
 ## anggota
 
 | Nama | NRP |
@@ -14,8 +12,12 @@ login.sh
 
 
 ## Soal 2
+
 a. pertama membuat dua shell script, login.sh dan register.sh, yang dimana database “Player” disimpan di /data/player.csv. Untuk register, parameter yang dipakai yaitu email, username, dan password. Untuk login, parameter yang dipakai yaitu email dan password.
 
+login.sh
+
+```sh# Sisop-1-2025-IT07
 #!/bin/bash
 
 DB_FILE="/home/maulana/data/player.csv"
