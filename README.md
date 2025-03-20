@@ -8,28 +8,34 @@
 | Mochkamad Maulana Syafaat	| 5027241021 	|
 
 ##Table Of Content
-
 1. Poppo Siroyo
-2. a. First Step in a New World
-   b. Radiant Genesis
-   c. Unceasing Spirit
-   d. The Eternal Realm of Light
-   e. The Brutality of Glass
-   f. In Grief and Great Delight
-   g. On Fate's Approach
-   h. The Disfigured Flow of Time
-   i. Irruption of New Color
-3. a. Speak to Me
-   b. On the Run
-   c. Time
-   d. Money
-   e. Brain Damage
-4. a. Melihat summary dari data
-   b. Mengurutkan Pokemon berdasarkan data kolom
-   c. Mencari nama Pokemon tertentu
-   d. Mencari Pokemon berdasarkan filter nama type
-   e. Error handling
-   f. Help screen yang menarik
+   1. Buku Chris Hemsworth
+   2. Rata-rata Durasi Membaca
+   3. Rating Tertinggi
+   4. Genre Paling Populer di Asia
+2. Observer: Penjaga Fragmen Realitas
+   1. First Step in a New World
+   2. Radiant Genesis
+   3. Unceasing Spirit
+   4. The Eternal Realm of Light
+   5. The Brutality of Glass
+   6. In Grief and Great Delight
+   7. On Fate's Approach
+   8. The Disfigured Flow of Time
+   9. Irruption of New Color
+3. The Dark Side of the Moon
+   1. Speak to Me
+   2. On the Run
+   3. Time
+   4. Money
+   5. Brain Damage
+4. Pokemon “Generation 9 OverUsed 6v6 Singles
+   1. Melihat summary dari data
+   2. Mengurutkan Pokemon berdasarkan data kolom
+   3. Mencari nama Pokemon tertentu
+   4. Mencari Pokemon berdasarkan filter nama type
+   5. Error handling
+   6. Help screen yang menarik
 
 ## Soal 1
 
