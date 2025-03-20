@@ -567,6 +567,11 @@ if [ "$COMMAND" == "--filter" ]; then
     ' "$FILE" | sort -t',' -k2 -nr
 fi
 ```
+
+Untuk menjalankan program tersebut, gunakan command seperti berikut :
+
+	./pokemon_analysis.sh pokemon_usage.csv --filter Fighting
+ 
 ## REVISI
 
 C.“Unceasing Spirit”
