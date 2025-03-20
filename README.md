@@ -514,7 +514,7 @@ Fitur ini bertujuan untuk mencari Pokémon tertentu berdasarkan namanya dalam da
 #!/bin/bash
 
 FILE=$1
-COMMAND=$2  # Perintah (--grep)
+COMMAND=$2 
 
 if [ "$COMMAND" == "--grep" ]; then
     if [ "$#" -ne 3 ]; then
@@ -524,14 +524,10 @@ if [ "$COMMAND" == "--grep" ]; then
 
     POKEMON_NAME=$3
 
-    # Cetak header
     head -n 1 "$FILE"
 
-    # Cari Pokémon dengan nama yang tepat dan urutkan berdasarkan Usage%
-    awk -F',' -v name="$POKEMON_NAME" '
-        NR == 1 { next }  # Lewati header
-        tolower($1) == tolower(name) { print }
-    ' "$FILE" | sort -t',' -k2 -nr
+    # Cari Pokémon dengan nama dan urutkan berdasarkan Usage%
+    awk -F',' -v name="$POKEMON_NAME" 'NR == 1 { next }  # Lewati header tolower($1) == tolower(name) { print } ' "$FILE" | sort -t',' -k2 -nr
 fi
 
 ```
@@ -547,7 +543,7 @@ Fitur --filter ini memungkinkan pencarian Pokémon berdasarkan Type1 atau Type2,
 #!/bin/bash
 
 FILE=$1
-COMMAND=$2  # Perintah (--filter)
+COMMAND=$2 
 
 if [ "$COMMAND" == "--filter" ]; then
     if [ "$#" -ne 3 ]; then
@@ -560,11 +556,8 @@ if [ "$COMMAND" == "--filter" ]; then
     # Cetak header
     head -n 1 "$FILE"
 
-    # Cari Pokémon berdasarkan Type1 atau Type2 dan urutkan berdasarkan Usage%
-    awk -F',' -v type="$TYPE_NAME" '
-        NR == 1 { next }  # Lewati header
-        tolower($4) == tolower(type) || tolower($5) == tolower(type) { print }
-    ' "$FILE" | sort -t',' -k2 -nr
+    # Cari Pokémon berdasarkan Type dan urutkan berdasarkan Usage%
+    awk -F',' -v type="$TYPE_NAME" 'NR == 1 { next }  # Lewati header tolower($4) == tolower(type) || tolower($5) == tolower(type) { print } ' "$FILE" | sort -t',' -k2 -nr
 fi
 ```
 
