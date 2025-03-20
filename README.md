@@ -1,4 +1,4 @@
-# Laporan Resmi Modul 1
+# Laporan Resmi Modul 1 Kelompok IT-07
 ## Anggota
 
 | Nama 				| NRP		|
@@ -325,6 +325,22 @@ do
 	shift
 done
 ```
-### Soal 1A
-
+### Soal 1.A
+Pada subsoal A, kita diperintahkan untuk memanggil API pada tautan tertera dan menampilkan "word of affirmation" setiap detiknya. Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+if [ "$play" == "Speak To Me" ]
+then
+```
+1. Membuat if-else statement untuk menjalankan kode yang sesuai dengan value dari variabel "play". Pada kasus subsoal A, value yang diperlukan adalah "Speak To Me".
+```sh
+until read -n 1 -t 1 -s
+    do
+        # ...
+    done
+```
+2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
+"-n 1"	: Command read akan hanya membaca satu karakter yang diinput oleh user pada command line.
+"-t 1"	: Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
+"-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
 ## Soal 4
