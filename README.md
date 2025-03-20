@@ -418,7 +418,22 @@ then
  
 ## Soal 4
 
+c. 
+```bash
+#!/bin/bash
+elif [ "$COMMAND" == "--grep" ]; then
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: $0 <pokemon_usage.csv> --grep <pokemon_name>"
+        exit 1
+    fi
 
+    POKEMON_NAME=$3
+
+    # header
+    head -n 1 "$FILE"
+
+    # Cari Pokémon dengan nama yang tepat
+    awk -F',' -v name="$POKEMON_NAME" 'NR > 1 && tolower($1) == tolower(name)' "$FILE"
 
 
 
