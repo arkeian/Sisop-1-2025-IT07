@@ -401,7 +401,7 @@ then
 
 ### Soal 3.B
 
-Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dalam dirinya sendiri dengan interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
+Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dirinya sendiri dengan interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 elif [ "$play" == "On The Run" ]
 then
