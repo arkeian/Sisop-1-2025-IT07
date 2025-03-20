@@ -229,6 +229,13 @@ done
 ![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_21_59_26.png?raw=true)
 
 
+## kendala 
+terkadang di bagian log outputnya eror
+
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_22_14_40.png?raw=true)
+
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_22_14_33.png?raw=true)
+
 
 h. buatlah 2 log file, core.log dan fragment.log di folder ./log/, yang dimana masing-masing terhubung ke program usage monitoring untuk usage tersebut. 
 Format log:
