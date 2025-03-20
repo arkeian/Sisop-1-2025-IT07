@@ -439,7 +439,34 @@ elif [ "$COMMAND" == "--grep" ]; then
     awk -F',' -v name="$POKEMON_NAME" 'NR > 1 && tolower($1) == tolower(name)' "$FILE"
 
 ```
+d. Mencari Pokémon Berdasarkan Type dan Sort Berdasarkan Usage%
 
+Fitur --filter ini memungkinkan pencarian Pokémon berdasarkan Type1 atau Type2, dan hasilnya akan diurutkan berdasarkan Usage% (kolom ke-2).
+
+```bash
+#!/bin/bash
+
+FILE=$1
+COMMAND=$2  # Perintah (--filter)
+
+if [ "$COMMAND" == "--filter" ]; then
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: $0 <pokemon_usage.csv> --filter <type_name>"
+        exit 1
+    fi
+
+    TYPE_NAME=$3
+
+    # Cetak header
+    head -n 1 "$FILE"
+
+    # Cari Pokémon berdasarkan Type1 atau Type2 dan urutkan berdasarkan Usage%
+    awk -F',' -v type="$TYPE_NAME" '
+        NR == 1 { next }  # Lewati header
+        tolower($4) == tolower(type) || tolower($5) == tolower(type) { print }
+    ' "$FILE" | sort -t',' -k2 -nr
+fi
+```
 ## REVISI
 
 C.“Unceasing Spirit”
