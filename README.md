@@ -393,7 +393,11 @@ then
     done
 ```
 5. Menjalankan kode dibawahnya sampai suatu kondisi terpenuhi. Pada kasus ini, jika persentase progress bar mencapai 100%.
-
+```sh
+	let randnum=($RANDOM%10)+1
+        randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
+```
+6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0.1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke bc supaya dapat diubah menjadi interbal yang sesuai. 
 ### Kendala yang Dialami
 
 1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
