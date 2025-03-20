@@ -339,8 +339,23 @@ until read -n 1 -t 1 -s
     done
 ```
 2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
-"-n 1"	: Command read akan hanya membaca satu karakter yang diinput oleh user pada command line.
-"-t 1"	: Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
-"-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+- "-n 1"	: Command read akan hanya membaca satu karakter yang diinput oleh user pada command line.
+- "-t 1"	: Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
+- "-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.  
 Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
+```sh
+        curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
+```
+3. Menjalankan command "curl" yang akan memanggil API dari tautan yang diberikan dengan ketentuan sebagai berikut:
+- "-s"	: Command curl hanya mengoutput data yang diperlukan. Hal seperti pesan error dan progress bar bawaan curl tidak akan ditampilkan.
+- "-H"	: Memanggil API dengan custom header "Accept: application/json".
+Namun, data yang dioutput oleh curl masih bersifat bawaan dari API-nya, sebagai contoh:
+```sh
+{"affirmation":"Your mind is full of brilliant ideas"}
+```
+Sedangkan output yang diinginkan adalah:
+```sh
+Your mind is full of brilliant ideas
+```
+Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. 
 ## Soal 4
