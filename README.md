@@ -84,6 +84,8 @@ else
     exit 1
 fi
 ```
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-19_21_57_54.png?raw=true)
+
 
 register.sh
 
