@@ -438,10 +438,7 @@ elif [ "$COMMAND" == "--grep" ]; then
     # Cari Pokémon dengan nama yang tepat
     awk -F',' -v name="$POKEMON_NAME" 'NR > 1 && tolower($1) == tolower(name)' "$FILE"
 
-
-
-
-
+```
 
 ## REVISI
 
