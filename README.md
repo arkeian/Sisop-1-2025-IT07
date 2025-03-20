@@ -535,6 +535,10 @@ if [ "$COMMAND" == "--grep" ]; then
 fi
 
 ```
+Untuk menjalankan program tersebut, gunakan command seperti berikut :
+
+	./pokemon_analysis.sh pokemon_usage.csv --grep Chansey
+ 
 d. Mencari Pokémon Berdasarkan Type dan Sort Berdasarkan Usage%
 
 Fitur --filter ini memungkinkan pencarian Pokémon berdasarkan Type1 atau Type2, dan hasilnya akan diurutkan berdasarkan Usage% (kolom ke-2).
