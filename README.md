@@ -418,7 +418,10 @@ then
  
 ## Soal 4
 
-c. 
+c. Fitur Pencarian Pokémon Berdasarkan Nama (--grep)
+
+Fitur ini bertujuan untuk mencari Pokémon tertentu berdasarkan namanya dalam dataset pokemon_usage.csv, dengan memastikan pencarian tidak menampilkan hasil yang tidak relevan. Hasil pencarian juga akan diurutkan berdasarkan Usage% untuk mempermudah analisis.
+
 ```bash
 #!/bin/bash
 elif [ "$COMMAND" == "--grep" ]; then
