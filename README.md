@@ -357,7 +357,7 @@ done
   
 Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
 ```sh
-        curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
+curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
 ```
 3. Menjalankan command "curl" yang akan memanggil API dari tautan yang diberikan dengan ketentuan sebagai berikut:
 * `-s` Command curl hanya mengoutput data yang diperlukan. Hal seperti pesan error dan progress bar bawaan curl tidak akan ditampilkan.
