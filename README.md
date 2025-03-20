@@ -129,10 +129,7 @@ if [[ ! "$password" =~ [A-Z] || ! "$password" =~ [a-z] || ! "$password" =~ [0-9]
 c.Karena diperlukan pengecekan keaslian “Player” yang aktif, maka diperlukan sistem untuk pencegahan duplikasi “Player”. Jadikan sistem login/register tidak bisa memakai email yang sama (email = unique), tetapi tidak ada pengecekan tambahan untuk username.
 
 ```sh
-if grep -q "^$email," "$DB_FILE"; then
-    echo "Email sudah terdaftar!"
-    exit 1
-fi
+
 ```
 
 d.password perlu disimpan dalam bentuk yang tidak mudah diakses. Gunakan algoritma hashing sha256sum yang memakai static salt (bebas).
@@ -229,6 +226,10 @@ while true; do
 done
 ```
 
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_21_59_26.png?raw=true)
+
+
+
 h.buatlah 2 log file, core.log dan fragment.log di folder ./log/
 ```sh
 
@@ -277,6 +278,8 @@ while true; do
     esac
 done
 ```
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_21_58_25.png?raw=true)
+
 
 ## Soal 3
 
