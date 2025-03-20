@@ -417,7 +417,8 @@ then
 
 
 
-##REVISI
+## REVISI
+
 C.“Unceasing Spirit”
 Karena diperlukan pengecekan keaslian “Player” yang aktif, maka diperlukan sistem untuk pencegahan duplikasi “Player”. Jadikan sistem login/register tidak bisa memakai email yang sama (email = unique), tetapi tidak ada pengecekan tambahan untuk username.
 
