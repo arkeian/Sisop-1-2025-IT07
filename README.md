@@ -273,4 +273,58 @@ while true; do
 done
 ```
 
+## Soal 3
+### Pendahuluan
+Soal 3 terdiri dari lima subsoal, masing-masing dijalankan menggunakan argumen yang berbeda pada opsi/flag "--play". Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+#!/bin/bash
+```
+1. Memperintah sistem untuk menggunakan bash sebagai interpreter program.
+```sh
+clear
+```
+2. Membersihkan layar terminal
+```sh
+while [ "$#" -gt 0 ]
+do
+    case "$1" in
+        # ...
+    esac
+	shift
+done
+```
+3. Memastikan bahwa terdapat opsi/flag yang diberikan ke program dan memprosesnya satu per satu.
+```sh
+--play=*)
+            play="${1#*=}"
+            ;;
 
+```
+4. Membuat case untuk setiap opsi/flag. Sesuai dengan perintah di soal, maka opsi/flag yang digunakan hanya satu yaitu "--play" dalam bentuk long format. Kemudian program akan menyimpan argumen yang diberikan pada variabel "play".
+```sh
+*)
+            printf "Unknown Argument\n" >&2
+```
+5. Memastikan program dapat menangkap dan memproses argumen yang tidak diinginkan. Program juga dibuat agar menampilkan pesan error apabila kasus ini terjadi.
+
+Secara keseluruhan, program pada bagian pendahuluan terlihat seperti ini:
+```sh
+#!/bin/bash
+
+clear
+
+while [ "$#" -gt 0 ]
+do
+    case "$1" in
+        --play=*)
+            play="${1#*=}"
+            ;;
+        *)
+            printf "Unknown Argument\n" >&2
+    esac
+	shift
+done
+```
+### Soal 1A
+
+## Soal 4
