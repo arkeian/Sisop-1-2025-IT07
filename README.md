@@ -9,7 +9,33 @@
 |Zaenal Mustofa|5027241018|
 |       |      |
 
+#Table Of Content
 
+1. Poppo Siroyo
+2. a. First Step in a New World
+   b. Radiant Genesis
+   c. Unceasing Spirit
+   d. The Eternal Realm of Light
+   e. The Brutality of Glass
+   f. In Grief and Great Delight
+   g. On Fate's Approach
+   h. The Disfigured Flow of Time
+   i. Irruption of New Color
+3. a. Speak to Me
+   b. On the Run
+   c. Time
+   d. Money
+   e. Brain Damage
+4. a. Melihat summary dari data
+   b. Mengurutkan Pokemon berdasarkan data kolom
+   c. Mencari nama Pokemon tertentu
+   d. Mencari Pokemon berdasarkan filter nama type
+   e. Error handling
+   f. Help screen yang menarik
+
+## Soal 1
+
+a. 
 
 
 ## Soal 2
