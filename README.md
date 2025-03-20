@@ -39,7 +39,17 @@
 
 ## Soal 1
 
-a. 
+a. Poppo bisa menggunakan AWK atau grep untuk menghitung jumlah baris dalam file reading_data.csv yang menunjukkan buku-buku yang dibaca oleh Chris Hemsworth.
+
+	awk -F, '$2 == "Chris Hemsworth" {count++} END {print "Chris Hemsworth membaca " count " buku."}' reading_data.csv
+
+b. Siroyo bisa menggunakan AWK untuk menghitung rata-rata durasi membaca (Reading_Duration_Minutes) untuk buku-buku yang dibaca menggunakan "Tablet" dari file reading_data.csv
+
+	awk -F, '$8 == "Tablet" {sum += $6; count++} END {if (count > 0) print "Rata-rata durasi membaca dengan Tablet adalah " sum/count " menit."}' reading_data.csv
+
+c. Poppo bisa menggunakan AWK untuk mencari siapa yang memberikan rating tertinggi beserta nama pembaca dan judul buku dari file reading_data.csv
+
+	
 
 
 ## Soal 2
