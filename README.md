@@ -296,6 +296,7 @@ terkadang di bagian log outputnya eror
 
 
 
+
 ## Soal 3
 
 ### Pendahuluan
@@ -351,14 +352,14 @@ do
 done
 ```
 
-### Soal 1.A
+### Soal 3.A
 
 Pada subsoal A, kita diperintahkan untuk memanggil API pada tautan tertera dan menampilkan "word of affirmation" setiap detiknya. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 if [ "$play" == "Speak To Me" ]
 then
 ```
-1. Membuat if-else statement untuk menjalankan kode yang sesuai dengan value dari variabel "play". Pada kasus subsoal A, value yang diperlukan adalah "Speak To Me".
+1. Membuat if-else statement untuk menjalankan kode yang sesuai dengan value dari variabel "play". Pada kasus subsoal A, value yang perlu dicompare adalah "Speak To Me".
 ```sh
 until read -n 1 -t 1 -s
 do
@@ -388,7 +389,7 @@ Your mind is full of brilliant ideas
 ```
 Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. Command "print" bawaan awk, secara default akan menambahkan newline diakhir string, maka tidak perlu menambahkan karakter newline diakhir.  
 
-Secara keseluruhan, program pada bagian 1.A terlihat seperti ini:
+Secara keseluruhan, program pada bagian 3.A terlihat seperti ini:
 ```sh
 if [ "$play" == "Speak To Me" ]
 then
@@ -398,18 +399,18 @@ then
     done
 ```
 
-### Soal 1.B
+### Soal 3.B
 
 Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dalam dirinya sendiri dengan interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 elif [ "$play" == "On The Run" ]
 then
 ```
-1. Merupakan lanjutan dari if statement subsoal A, dimana pada kasus subsoal B, value yang diperlukan adalah "On The Run".
+1. Merupakan lanjutan dari if statement subsoal A, dimana pada kasus subsoal B, value yang perlu dicompare adalah "On The Run".
 ```sh
 printf "Loading...\n"
 ```
-2. Mengoutput string pada terminal. Hanya bersifat sebagai estetika saja.
+2. Mengoutput string pada stdout. Hanya bersifat sebagai estetika saja.
 ```sh
 length=$COLUMNS
 let max=$length-7
@@ -449,9 +450,9 @@ else
 	# ...
 fi
 ```
-9. Jika belum 100% maka progress akan bertambah dan akan mengoutput simbol "■" yang merepresentasikan visualisasi progress bar pada terminal, dengan ketentuan sebagai berikut:
+9. Jika belum 100% maka progress akan bertambah dan akan mengoutput simbol "■" yang merepresentasikan visualisasi progress bar pada stdout, dengan ketentuan sebagai berikut:
 * `\r` Carriage return, dimana daripada membuat newline, setiap iterasi while akan mengupdate baris yang sudah ada.
-* `\e%dG` Escape sequence untuk memindahkan kursor yang akan mengoutput simbol "■" pada terminal satu karakter ke kanan sesuai value variabel progress setiap iterasi while.
+* `\e%dG` Escape sequence untuk memindahkan kursor yang akan mengoutput simbol "■" pada stdout satu karakter ke kanan sesuai value variabel progress setiap iterasi while.
 ```sh
 printf "\e[%dG] %d%%" $max $percent
 ```
@@ -461,7 +462,7 @@ sleep $randinterval
 ```
 11. Karena nilai interval akan berubah setiap iterasi, kurang efisien jika menggunakan statement "until". Maka dari itu, pada subsoal in digunakan command "sleep" yang memiliki fungsi sama, hanya saja tidak akan berhenti jika user melakukan keypress.
 
-Secara keseluruhan, program pada bagian 1.B terlihat seperti ini:
+Secara keseluruhan, program pada bagian 3.B terlihat seperti ini:
 ```sh
 elif [ "$play" == "On The Run" ]
 then
@@ -487,14 +488,14 @@ then
     done
 ```
 
-### Soal 1.C
+### Soal 3.C
 
 Pada subsoal C, kita diperintahkan untuk membuat membuat live clock yang akan memperbarui dirinya sendiri setiap detik. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 elif [ "$play" == "Time" ]
 then
 ```
-1. Merupakan lanjutan dari elif statement subsoal B, dimana pada kasus subsoal C, value yang diperlukan adalah "Time".
+1. Merupakan lanjutan dari elif statement subsoal B, dimana pada kasus subsoal C, value yang perlu dicompare adalah "Time".
 ```sh
 until read -n 1 -t 1 -s
 do
@@ -507,8 +508,44 @@ done
 * `-s` Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
   
 Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
+```sh
+awk '/rtc_date/ {date=$3} /rtc_time/ {time=$3} END {printf "\r%s %s", date, time}' /proc/driver/rtc
+```
+3. Mengambil data kolom ketiga dari baris yang terdapat "rtc_date" dan "rtc_time" yang berada di dalam file /proc/driver/rtc dan mengoutputnya ke stdout dalam format YYYY-MM-DD HH:MM:SS.
+```sh
+printf "\n"
+```
+4. Membuat line baru.
 
+Secara keseluruhan, program pada bagian 3.C terlihat seperti ini:
+```sh
+elif [ "$play" == "Time" ]
+then
+    until read -n 1 -t 1 -s
+    do
+        awk '/rtc_date/ {date=$3} /rtc_time/ {time=$3} END {printf "\r%s %s", date, time}' /proc/driver/rtc
+    done
+    printf "\n"
+```
 
+### Soal 3.D
+
+Pada subsoal D, kita diperintahkan untuk membuat sebuah program imitasi cmatrix tetapi dengan menggunakan simbol mata uang sebagai efeknya. Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+elif [ "$play" == "Money" ]
+then
+```
+1. Merupakan lanjutan dari elif statement subsoal C, dimana pada kasus subsoal D, value yang perlu dicompare adalah "Money".
+```sh
+symbols=("$" "€" "¥" "₤" "£" "¢" "฿" "₱" "₹" "₩" "₿" "₣")
+```
+2. Membuat sebuah array dengan nama symbol yang berisi simbol-simbol mata uang yang akan ditampilkan pada program.
+```sh
+until read -n 1 -t 0.001 -s
+    do
+        # ...
+    done
+```
 ### Kendala yang Dialami
 
 1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
@@ -518,7 +555,7 @@ Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, d
 </p>
   
 > Screenshot menampilkan error saat menggunakan "-eq" sebagai comparison operator.
- 
+
 ## Soal 4
 
 c. Fitur Pencarian Pokémon Berdasarkan Nama (--grep)
