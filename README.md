@@ -111,6 +111,9 @@ hash_password=$(echo -n "$password$SALT" | sha256sum | awk '{print $1}')
 echo "$email,$username,$hash_password" | tee -a "$DB_FILE" > /dev/null
 echo "Registrasi berhasil"
 ```
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-19_21_57_13.png?raw=true)
+
+
 b.Sistem login/register Email harus memiliki format yang benar dengan tanda @ dan titik, sementara password harus memiliki minimal 8 karakter, setidaknya satu huruf kecil, satu huruf besar, dan satu angka 
 
 ```sh
