@@ -393,4 +393,15 @@ then
     done
 ```
 5. Menjalankan kode dibawahnya sampai suatu kondisi terpenuhi. Pada kasus ini, jika persentase progress bar mencapai 100%.
+
+### Kendala yang Dialami
+
+1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
+
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/ede2fb93-6f44-484f-9773-511900679152" alt="Comparison Operator Error" width="640" height="360">  
+</p>
+  
+> Screenshot menampilkan error saat menggunakan "-eq" sebagai comparison operator.
+ 
 ## Soal 4
