@@ -511,7 +511,7 @@ Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, d
 ```sh
 awk '/rtc_date/ {date=$3} /rtc_time/ {time=$3} END {printf "\r%s %s", date, time}' /proc/driver/rtc
 ```
-3. Mengambil data kolom ketiga dari baris yang terdapat "rtc_date" dan "rtc_time" yang berada di dalam file /proc/driver/rtc dan mengoutputnya ke stdout dalam format YYYY-MM-DD HH:MM:SS.
+3. Mengambil data kolom ketiga dari baris yang terdapat "rtc_date" dan "rtc_time" yang berada di dalam file /proc/driver/rtc kemudian mengoutputnya ke stdout dalam format YYYY-MM-DD HH:MM:SS.
 ```sh
 printf "\n"
 ```
