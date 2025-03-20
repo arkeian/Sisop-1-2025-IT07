@@ -306,14 +306,14 @@ done
 3. Memastikan bahwa terdapat opsi/flag yang diberikan ke program dan memprosesnya satu per satu.
 ```sh
 --play=*)
-            play="${1#*=}"
-            ;;
+	play="${1#*=}"
+	;;
 
 ```
 4. Membuat case untuk setiap opsi/flag. Sesuai dengan perintah di soal, maka opsi/flag yang digunakan hanya satu yaitu "--play" dalam bentuk long format. Kemudian program akan menyimpan argumen yang diberikan pada variabel "play".
 ```sh
 *)
-            printf "Unknown Argument\n" >&2
+	printf "Unknown Argument\n" >&2
 ```
 5. Memastikan program dapat menangkap dan memproses argumen yang tidak diinginkan. Program juga dibuat agar menampilkan pesan error apabila kasus ini terjadi.
 
@@ -346,22 +346,22 @@ then
 1. Membuat if-else statement untuk menjalankan kode yang sesuai dengan value dari variabel "play". Pada kasus subsoal A, value yang diperlukan adalah "Speak To Me".
 ```sh
 until read -n 1 -t 1 -s
-    do
-        # ...
-    done
+do
+	# ...
+done
 ```
 2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
-- "-n 1"	: Command read akan hanya membaca satu karakter yang diinput oleh user pada command line.
-- "-t 1"	: Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
-- "-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+* `-n 1` Command read akan hanya membaca 1 karakter yang diinput oleh user pada command line.
+* `-t 1` Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
+* `-s` Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
   
 Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
 ```sh
         curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
 ```
 3. Menjalankan command "curl" yang akan memanggil API dari tautan yang diberikan dengan ketentuan sebagai berikut:
-- "-s"	: Command curl hanya mengoutput data yang diperlukan. Hal seperti pesan error dan progress bar bawaan curl tidak akan ditampilkan.
-- "-H"	: Memanggil API dengan custom header "Accept: application/json".
+* `-s` Command curl hanya mengoutput data yang diperlukan. Hal seperti pesan error dan progress bar bawaan curl tidak akan ditampilkan.
+* `-H` Memanggil API dengan custom header "Accept: application/json".
   
 Namun, data yang dioutput oleh curl masih bersifat bawaan dari API-nya, sebagai contoh:
 ```sh
@@ -371,41 +371,129 @@ Sedangkan output yang diinginkan adalah:
 ```sh
 Your mind is full of brilliant ideas
 ```
-Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. Command "print" bawaan awk, secara default akan menambahkan newline diakhir string, maka tidak perlu menambahkan karakter newline diakhir.
+Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. Command "print" bawaan awk, secara default akan menambahkan newline diakhir string, maka tidak perlu menambahkan karakter newline diakhir.  
+
+Secara keseluruhan, program pada bagian 1.A terlihat seperti ini:
+```sh
+if [ "$play" == "Speak To Me" ]
+then
+    until read -n 1 -t 1 -s
+    do
+        curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
+    done
+```
 
 ### Soal 1.B
 
-Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dalam interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
+Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dalam dirinya sendiri dengan interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 elif [ "$play" == "On The Run" ]
 then
 ```
 1. Merupakan lanjutan dari if statement subsoal A, dimana pada kasus subsoal B, value yang diperlukan adalah "On The Run".
 ```sh
-    printf "Loading...\n"
+printf "Loading...\n"
 ```
 2. Mengoutput string pada terminal. Hanya bersifat sebagai estetika saja.
 ```sh
-    length=$COLUMNS
-    let max=$length-7
+length=$COLUMNS
+let max=$length-7
 ```
 3. Mengambil data jumlah kolom yang dapat dipenuhi sebuah karakter terminal window saat ini. Kemudian mengurangi sebanyak 7 karakter agar dpat menampilkan persentase progress bar diakhir.
 ```sh
-    progress=1
+progress=1
 ```
 4. Mendeklarasikan variabel progress yang akan bertambah setiap karakter yang diinput.
 ```sh
- while true
-    do
-        # ...
-    done
+while true
+do
+	# ...
+done
 ```
 5. Menjalankan kode dibawahnya sampai suatu kondisi terpenuhi. Pada kasus ini, jika persentase progress bar mencapai 100%.
 ```sh
-	let randnum=($RANDOM%10)+1
-        randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
+let randnum=($RANDOM%10)+1
+randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
 ```
-6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0.1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke bc supaya dapat diubah menjadi interbal yang sesuai. 
+6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0,1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke bc supaya dapat diubah menjadi interbal yang sesuai.
+```sh
+let percent=$progress*100/$max
+```
+7. Variabel progress merepresentasikan setiap karakter pada baris terminal yang dapat diisi oleh progress bar. Namun, tidak semua window terminal tepat memiliki 100 karakter yang dapat diisi oleh progress bar. Oleh karena itu, variabel percent digunakan sebagai perbandingan antara progress dengan jumlah karakter maksimum yang dapat diisi oleh progress bar.
+```sh
+if [ $percent -gt 100 ]
+	then
+            printf "\nFinished!\n"
+            break
+```
+8. Membuat if statement untuk mengakhiri program jika persentase sudah mencapai 100%.
+```sh
+else
+	((progress++))
+	printf "\r[\e[%dG■" $progress
+	# ...
+fi
+```
+9. Jika belum 100% maka progress akan bertambah dan akan mengoutput simbol "■" yang merepresentasikan visualisasi progress bar pada terminal, dengan ketentuan sebagai berikut:
+* `\r` Carriage return, dimana daripada membuat newline, setiap iterasi while akan mengupdate baris yang sudah ada.
+* `\e%dG` Escape sequence untuk memindahkan kursor yang akan mengoutput simbol "■" pada terminal satu karakter ke kanan sesuai value variabel progress setiap iterasi while.
+```sh
+printf "\e[%dG] %d%%" $max $percent
+```
+10. Aspek estetika untuk menampilkan "] XX%" di ujung terminal, sekaligus alasan mengapa jumlah karakter maksimum suatu kolom harus dikurangi tepat 7 karakter.
+```sh
+sleep $randinterval
+```
+11. Karena nilai interval akan berubah setiap iterasi, kurang efisien jika menggunakan statement "until". Maka dari itu, pada subsoal in digunakan command "sleep" yang memiliki fungsi sama, hanya saja tidak akan berhenti jika user melakukan keypress.
+
+Secara keseluruhan, program pada bagian 1.B terlihat seperti ini:
+```sh
+elif [ "$play" == "On The Run" ]
+then
+    printf "Loading...\n"
+    length=$COLUMNS
+    let max=$length-7
+    progress=1
+    while true
+    do
+        let randnum=($RANDOM%10)+1
+        randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
+        let percent=$progress*100/$max
+        if [ $percent -gt 100 ]
+        then
+            printf "\nFinished!\n"
+            break
+        else
+            ((progress++))
+            printf "\r[\e[%dG■" $progress
+            printf "\e[%dG] %d%%" $max $percent
+            sleep $randinterval
+        fi
+    done
+```
+
+### Soal 1.C
+
+Pada subsoal C, kita diperintahkan untuk membuat membuat live clock yang akan memperbarui dirinya sendiri setiap detik. Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+elif [ "$play" == "Time" ]
+then
+```
+1. Merupakan lanjutan dari elif statement subsoal B, dimana pada kasus subsoal C, value yang diperlukan adalah "Time".
+```sh
+until read -n 1 -t 1 -s
+do
+        # ...
+done
+```
+2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
+* `-n 1` Command read akan hanya membaca 1 karakter yang diinput oleh user pada command line.
+* `-t 1` Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
+* `-s` Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+  
+Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
+
+
 ### Kendala yang Dialami
 
 1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
