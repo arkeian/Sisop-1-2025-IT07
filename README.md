@@ -431,7 +431,7 @@ done
 let randnum=($RANDOM%10)+1
 randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
 ```
-6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0,1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke bc supaya dapat diubah menjadi interval yang sesuai.
+6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0,1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke command "bc" (Basic Calculator) supaya dapat diubah menjadi interval yang sesuai.
 ```sh
 let percent=$progress*100/$max
 ```
@@ -460,7 +460,7 @@ printf "\e[%dG] %d%%" $max $percent
 ```sh
 sleep $randinterval
 ```
-11. Karena nilai interval akan berubah setiap iterasi, kurang efisien jika menggunakan statement "until". Maka dari itu, pada subsoal in digunakan command "sleep" yang memiliki fungsi sama, hanya saja tidak akan berhenti jika user melakukan keypress.
+11. Karena nilai interval akan berubah setiap iterasi, kurang efisien jika menggunakan statement "until". Maka dari itu, pada subsoal ini digunakan command "sleep" yang memiliki fungsi sama, hanya saja tidak akan berhenti jika user melakukan keypress.
 
 Secara keseluruhan, program pada bagian 3.B terlihat seperti ini:
 ```sh
