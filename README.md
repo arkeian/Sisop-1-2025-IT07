@@ -274,7 +274,9 @@ done
 ```
 
 ## Soal 3
+
 ### Pendahuluan
+
 Soal 3 terdiri dari lima subsoal, masing-masing dijalankan menggunakan argumen yang berbeda pada opsi/flag "--play". Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 #!/bin/bash
@@ -325,7 +327,9 @@ do
 	shift
 done
 ```
+
 ### Soal 1.A
+
 Pada subsoal A, kita diperintahkan untuk memanggil API pada tautan tertera dan menampilkan "word of affirmation" setiap detiknya. Adapun langkah implementasinya adalah sebagai berikut:
 ```sh
 if [ "$play" == "Speak To Me" ]
@@ -341,7 +345,8 @@ until read -n 1 -t 1 -s
 2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
 - "-n 1"	: Command read akan hanya membaca satu karakter yang diinput oleh user pada command line.
 - "-t 1"	: Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
-- "-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.  
+- "-s"	: Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+  
 Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
 ```sh
         curl -sH "Accept: application/json" "https://www.affirmations.dev" | awk -F '"' '{print $4}'
@@ -349,6 +354,7 @@ Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, d
 3. Menjalankan command "curl" yang akan memanggil API dari tautan yang diberikan dengan ketentuan sebagai berikut:
 - "-s"	: Command curl hanya mengoutput data yang diperlukan. Hal seperti pesan error dan progress bar bawaan curl tidak akan ditampilkan.
 - "-H"	: Memanggil API dengan custom header "Accept: application/json".
+  
 Namun, data yang dioutput oleh curl masih bersifat bawaan dari API-nya, sebagai contoh:
 ```sh
 {"affirmation":"Your mind is full of brilliant ideas"}
@@ -357,5 +363,34 @@ Sedangkan output yang diinginkan adalah:
 ```sh
 Your mind is full of brilliant ideas
 ```
-Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. 
+Oleh karena itu, output dari command "curl" perlu dipipe ke command "awk" terlebih dahulu, dengan simbol " (Double Quotes) sebagai field separator atau pemisah datanya. Command "print" bawaan awk, secara default akan menambahkan newline diakhir string, maka tidak perlu menambahkan karakter newline diakhir.
+
+### Soal 1.B
+
+Pada subsoal B, kita diperintahkan untuk membuat progress bar yang akan memperbarui dalam interval random dan membentang sepanjang ukuran window terminal. Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+elif [ "$play" == "On The Run" ]
+then
+```
+1. Merupakan lanjutan dari if statement subsoal A, dimana pada kasus subsoal B, value yang diperlukan adalah "On The Run".
+```sh
+    printf "Loading...\n"
+```
+2. Mengoutput string pada terminal. Hanya bersifat sebagai estetika saja.
+```sh
+    length=$COLUMNS
+    let max=$length-7
+```
+3. Mengambil data jumlah kolom yang dapat dipenuhi sebuah karakter terminal window saat ini. Kemudian mengurangi sebanyak 7 karakter agar dpat menampilkan persentase progress bar diakhir.
+```sh
+    progress=1
+```
+4. Mendeklarasikan variabel progress yang akan bertambah setiap karakter yang diinput.
+```sh
+ while true
+    do
+        # ...
+    done
+```
+5. Menjalankan kode dibawahnya sampai suatu kondisi terpenuhi. Pada kasus ini, jika persentase progress bar mencapai 100%.
 ## Soal 4
