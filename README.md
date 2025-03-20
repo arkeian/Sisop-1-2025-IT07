@@ -230,11 +230,17 @@ done
 
 
 
-h.buatlah 2 log file, core.log dan fragment.log di folder ./log/
-```sh
+h. buatlah 2 log file, core.log dan fragment.log di folder ./log/, yang dimana masing-masing terhubung ke program usage monitoring untuk usage tersebut. 
+Format log:
+CPU
+[YYYY-MM-DD HH:MM:SS] - Core Usage [$CPU%] - Terminal Model [$CPU_Model]
 
+RAM
+[YYYY-MM-DD HH:MM:SS] - Fragment Usage [$RAM%] - Fragment Count [$RAM MB] - Details [Total: $TOTAL MB, Available: $AVAILABLE MB]
 
-```
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_22_08_07.png?raw=true)
+
+![alt text](https://github.com/jagosyafaat30/dokumetnsasi/blob/main/Screenshot_2025-03-20_22_08_29.png?raw=true)
 
 i.Buatlah shell script terminal.sh, yang berisi user flow berikut:
 Register
