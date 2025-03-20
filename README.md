@@ -1,13 +1,11 @@
+# Laporan Resmi Modul 1
+## Anggota
 
-## anggota
-
-| Nama | NRP |
-|------|------|
-|      |      |
-|Mochkamad maulana syafaat|5027241021|
-|       |      |
-|Zaenal Mustofa|5027241018|
-|       |      |
+| Nama 				| NRP		|
+|-------------------------------|---------------|
+| Muhammad Rakha Hananditya R.	| 5027241015 	|
+| Zaenal Mustofa		| 5027241018 	|
+| Mochkamad Maulana Syafaat	| 5027241021 	|
 
 ##Table Of Content
 
