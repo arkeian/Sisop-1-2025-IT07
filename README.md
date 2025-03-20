@@ -7,7 +7,7 @@
 | Zaenal Mustofa		| 5027241018 	|
 | Mochkamad Maulana Syafaat	| 5027241021 	|
 
-##Table Of Content
+## Table Of Content
 1. Poppo Siroyo
    1. Buku Chris Hemsworth
    2. Rata-rata Durasi Membaca
