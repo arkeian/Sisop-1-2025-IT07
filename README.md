@@ -49,7 +49,11 @@ b. Siroyo bisa menggunakan AWK untuk menghitung rata-rata durasi membaca (Readin
 
 c. Poppo bisa menggunakan AWK untuk mencari siapa yang memberikan rating tertinggi beserta nama pembaca dan judul buku dari file reading_data.csv
 
-	
+	awk -F, 'NR==1 {next} {if ($7 > max) {max = $7; reader = $2; book = $3}} END {print "Pembaca dengan rating tertinggi:", reader, "-", book, "-", max}' reading_data.csv
+
+ d. Siroyo bisa menggunakan AWK untuk menemukan genre yang paling populer di Asia setelah 31 Desember 2023 berdasarkan data di reading_data.csv.
+
+ 	awk -F, '$9 == "Asia" && $5 > "2023-12-31" {genre_count[$4]++} END {max = 0; for (g in genre_count) if (genre_count[g] > max) {max = genre_count[g]; popular = g} print "Genre paling populer di Asia setelah 2023 adalah", popular, "dengan", max, "buku."}' reading_data.csv
 
 
 ## Soal 2
