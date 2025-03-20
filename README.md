@@ -512,7 +512,11 @@ Fitur ini bertujuan untuk mencari Pokémon tertentu berdasarkan namanya dalam da
 
 ```bash
 #!/bin/bash
-elif [ "$COMMAND" == "--grep" ]; then
+
+FILE=$1
+COMMAND=$2  # Perintah (--grep)
+
+if [ "$COMMAND" == "--grep" ]; then
     if [ "$#" -ne 3 ]; then
         echo "Usage: $0 <pokemon_usage.csv> --grep <pokemon_name>"
         exit 1
@@ -520,11 +524,15 @@ elif [ "$COMMAND" == "--grep" ]; then
 
     POKEMON_NAME=$3
 
-    # header
+    # Cetak header
     head -n 1 "$FILE"
 
-    # Cari Pokémon dengan nama yang tepat
-    awk -F',' -v name="$POKEMON_NAME" 'NR > 1 && tolower($1) == tolower(name)' "$FILE"
+    # Cari Pokémon dengan nama yang tepat dan urutkan berdasarkan Usage%
+    awk -F',' -v name="$POKEMON_NAME" '
+        NR == 1 { next }  # Lewati header
+        tolower($1) == tolower(name) { print }
+    ' "$FILE" | sort -t',' -k2 -nr
+fi
 
 ```
 d. Mencari Pokémon Berdasarkan Type dan Sort Berdasarkan Usage%
