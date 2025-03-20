@@ -409,3 +409,23 @@ then
 > Screenshot menampilkan error saat menggunakan "-eq" sebagai comparison operator.
  
 ## Soal 4
+
+
+
+
+
+
+
+
+##REVISI
+C.“Unceasing Spirit”
+Karena diperlukan pengecekan keaslian “Player” yang aktif, maka diperlukan sistem untuk pencegahan duplikasi “Player”. Jadikan sistem login/register tidak bisa memakai email yang sama (email = unique), tetapi tidak ada pengecekan tambahan untuk username.
+
+```sh
+if grep -q "^$email," "$DB_FILE"; then
+    echo "Email sudah terdaftar!"
+    exit 1
+fi
+```
+
+
