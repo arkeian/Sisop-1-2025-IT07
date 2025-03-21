@@ -725,6 +725,64 @@ fi
 ```
 19. Merupakan lanjutan dari elif statement subsoal E, dimana jika value dari variabel "play" tidak memenuhi value if-elif apapun, maka program akan mengoutput pesan error ke stderr.
 
+Secara keseluruhan, program pada bagian 3.E terlihat seperti ini:
+```sh
+elif [ "$play" == "Brain Damage" ]
+then
+    until read -n 1 -t 1 -s
+    do
+        printf "\e[0;0H"
+        awk '{printf "\033[1;38;5;30mSystem Uptime: %02d:%02d:%02d:%02d\n", $1/3600/24, $1/3600%24, $1/60%60, $1%60}' /proc/uptime
+        awk '
+            {if ($3 == "R" || $3 == "S" || $3 == "Z" || $3 == "T" || $3 == "I") {count[$3]++;total++}}
+            END {
+                printf "\033[38;5;66mTasks: %d total, %d running, %d sleeping, %d zombie, %d stopped, %d idle", total, count["R"], count["S"], count["Z"], count["T"], count["I"]
+            }
+        ' /proc/*/stat 2>/dev/null
+        awk '
+        /MemTotal/ {memtotal=$2} /MemFree/ {memfree=$2} /MemAvailable/ {avail=$2} /Buffers/ {buffers=$2} /Cached/ {cached=$2} /Slab/ {slab=$2} /SwapTotal/ {swatotal=$2} /SwapFree/ {swafree=$2}
+        END {
+            buffcache=buffers+cached+slab
+            memused=memtotal-memfree-buffcache
+            printf "\033[38;5;102m\n\n\ttotal\t\tfree\t\tused\t\tavailable\tbuff/cache"
+            printf "\033[38;5;138m\nMemory:\t%.1f MiB\t%.1f MiB\t%.1f MiB\t%.1f MiB\t%.1f MiB", memtotal/1024, memfree/1024, memused/1024, avail/1024, buffcache/1024
+            swaused=swatotal-swafree
+            printf "\nSwap:\t%.1f MiB\t%.1f MiB\t%.1f MiB", swatotal/1024, swafree/1024, swaused/1024
+
+        }' /proc/meminfo
+        printf "\e[38;5;174m\n\nPID\tUSER\tSTATUS\t%%CPU\tCOMMAND\n\n"
+        limit=0
+        for proc in /proc/*/stat
+        do
+            status=$( awk '{print $3}' $proc 2>/dev/null)
+            if [ "$status" == "R" ] || [ "$status" == "S" ] || [ "$status" == "Z" ] || [ "$status" == "T" ] || [ "$status" == "I" ]
+            then
+                pid=$( awk '{print $1}' $proc 2>/dev/null)
+                user=$(ls -l $proc | awk '{print $3}' 2>/dev/null)
+                cmdname=$(awk '{print $2}' $proc 2>/dev/null)
+                uptime=$(awk '{print $1}' /proc/uptime)
+                utime=$(awk '{print $14}' $proc 2>/dev/null)
+                stime=$(awk '{print $15}' $proc 2>/dev/null)
+                starttime=$(awk '{print $22}' $proc 2>/dev/null)
+                ticks=$(getconf CLK_TCK)
+                let timespent=$utime+$stime
+                elapsedtime=$( printf "scale=1; %s - (%s / %s)\n" $uptime $starttime $ticks | bc)
+                cpuusage=$( printf "scale=1; 100 * ((%s / %s) / %s)\n" $timespent $ticks $elapsedtime | bc )
+                printf "\e[38;5;210m%d\t%s\t%s\t%.1f\t%s\e[K\n" $pid $user $status $cpuusage $cmdname
+                ((limit++))
+            fi
+            if [ $limit -gt 30 ]
+            then
+                break
+            fi
+        done
+    done
+    printf "\e[0m\n"
+else
+    printf "Unknown Argument\n" >&2
+fi
+```
+
 ### Kendala yang Dialami
 
 1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
@@ -734,6 +792,22 @@ fi
 </p>
   
 > Screenshot menampilkan error saat menggunakan "-eq" sebagai comparison operator.
+
+2. Pada subsoal B, pada bagian mendapatkan interval 0.1-1 detik, bash akan mengoutput error apabila kita mencoba untuk melakukan pembagian yang menghasilkan sebuah float. Hal ini karena bash tidak mendukung tipe data float. Sehingga solusi yang ditawarkan adalah melakukan perhitungannya diluar bash, khususnya pada command "bc" atau Basic Calculator.
+
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/f867a1f7-95a5-4e66-81de-caec6d379dc8" alt="Floating Point Error" width="640" height="360">  
+</p>
+
+> Screenshot menampilkan error saat mencoba membagi hasil $RANDOM%10+1 dengan 10.
+
+3. Pada subsoal E, pada bagian command "awk" untuk mengambil data status setiap proses pada folder /proc/, terkadang awk akan menemukan file yang tidak bisa dibaca (stderr). Maka dari itu, file-file ini lebih baik dibuang saja ke /dev/null.
+
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/e1d7dec1-00ef-42f9-b664-460a3b28cd84" alt="/proc/*/stat Error" width="640" height="360">  
+</p>
+
+> Screenshot menampilkan error saat command "awk" menemukan file dalam folder /proc/ yang tidak bisa dibaca.
 
 ## Soal 4
 
