@@ -623,9 +623,42 @@ printf "\e[0;0H"
 ```sh
 awk '{printf "\033[1;38;5;30mSystem Uptime: %02d:%02d:%02d:%02d\n", $1/3600/24, $1/3600%24, $1/60%60, $1%60}' /proc/uptime
 ```
-3. Mengambil data sistem uptime dalam satuan detik yang berada di dalam file /proc/uptime kemudian mengolahnya untuk mendapatkan jumlah hari, jam, menit, dan detik yang sesuai sebelum mengoutputnya ke stdout dalam format "System Update: DD:HH:MM:SS".
+4. Mengambil data sistem uptime dalam satuan detik yang berada di dalam file /proc/uptime kemudian mengolahnya untuk mendapatkan jumlah hari, jam, menit, dan detik yang sesuai sebelum mengoutputnya ke stdout dalam format "System Update: DD:HH:MM:SS".
 
 Adapun `\033[1;38;5;30m` merupakan escape sequence untuk menampilkan output dengan style **bold** dan warna dengan color index ID 30 dalam format octal (`\033`), karena command "awk" tidak mendukung format `\e` milik C.
+```sh
+awk '
+            {if ($3 == "R" || $3 == "S" || $3 == "Z" || $3 == "T" || $3 == "I") {count[$3]++;total++}}
+            END {
+                printf "\033[38;5;66mTasks: %d total, %d running, %d sleeping, %d zombie, %d stopped, %d idle", total, count["R"], count["S"], count["Z"], count["T"], count["I"]
+            }
+        ' /proc/*/stat 2>/dev/null
+```
+5. Mengambil data proses-proses yang ada dengan status running, sleeping, zombie, stopped, dan idle yang berada di dalam folder /proc/ kemudian menghitung jumlah proses secara keseluruhan dan pada masing-masing kategori status sebelum mengoutputnya ke stdout dengan warna color index ID 66.
+
+Adapun `/proc/*/stat 2>/dev/null` digunakan untuk mengatasi proses-proses yang tidak bisa dibaca statusnya (stderr) dan membuangnya ke /dev/null.
+```sh
+awk '
+        /MemTotal/ {memtotal=$2} /MemFree/ {memfree=$2} /MemAvailable/ {avail=$2} /Buffers/ {buffers=$2} /Cached/ {cached=$2} /Slab/ {slab=$2} /SwapTotal/ {swatotal=$2} /SwapFree/ {swafree=$2}
+        END {
+            buffcache=buffers+cached+slab
+            memused=memtotal-memfree-buffcache
+            printf "\033[38;5;102m\n\n\ttotal\t\tfree\t\tused\t\tavailable\tbuff/cache"
+            printf "\033[38;5;138m\nMemory:\t%.1f MiB\t%.1f MiB\t%.1f MiB\t%.1f MiB\t%.1f MiB", memtotal/1024, memfree/1024, memused/1024, avail/1024, buffcache/1024
+            swaused=swatotal-swafree
+            printf "\nSwap:\t%.1f MiB\t%.1f MiB\t%.1f MiB", swatotal/1024, swafree/1024, swaused/1024
+
+        }' /proc/meminfo
+```
+6. Mengambil data yang berhubungan dengan memori yang berada di dalam file /proc/meminfo kemudian memproses datanya sebelum mengoutputnya ke stdout dengan warna color index ID 102 dan ID 138.
+```sh
+printf "\e[38;5;174m\n\nPID\tUSER\tSTATUS\t%%CPU\tCOMMAND\n\n"
+```
+7. Mengoutput heading untuk kolom PID, USER, STATUS, %CPU, dan COMMAND ke stdout dengan warna color index ID 174.
+```sh
+limit=0
+```
+8. Mendeklarasikan variabel limit yang merepresentasikan batas seberapa banyak proses yang dapat ditampilkan ke window terminal.
 
 ### Kendala yang Dialami
 
