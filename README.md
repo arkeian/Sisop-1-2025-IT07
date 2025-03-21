@@ -816,7 +816,7 @@ Untuk menjalankan program tersebut, gunakan command seperti berikut :
  
 ## REVISI
 
-C.“Unceasing Spirit”
+2.C.“Unceasing Spirit”
 Karena diperlukan pengecekan keaslian “Player” yang aktif, maka diperlukan sistem untuk pencegahan duplikasi “Player”. Jadikan sistem login/register tidak bisa memakai email yang sama (email = unique), tetapi tidak ada pengecekan tambahan untuk username.
 
 ```sh
@@ -827,3 +827,136 @@ fi
 ```
 
 
+4.C & D
+
+```sh
+#!/bin/bash
+
+clear
+
+# ASCII Art
+cat << "EOF"
+55555555YYYYYYYYYYYYYYYYYYYYYYYYYYYYJJJJJJJYYYYYYYYYYYYYYYYYYYYYYYYYYYYJYBBB########################
+YYY5P5Y55PGGBBGP5YYYYJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ?YBB#BYYGBBBBB#BBBBBBBB#BBBBB
+YPGBBBB########BBBBBBBBGGP5JJJJJJJJJJJJJJYJJJJJJJJJJJJJJJJJJJ???????????YBB#GJJP#B555PBBBBBBBB######
+B########################BGP5YJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ????????????J#B#GJJG#YJJJY5#BBBBBBBB####
+####################BBBBB#####G5YJJJJJJJJJJJJJJJJJJ?????J????????????????P5P5JYY#GY5JJJ5#B#BBBB#####
+##################BBBBBBBBBB###B5JJJJJJ???????????????????????????????????JPYYYYYBBPPJJYGPP#BBB#####
+####BGP5PB###BBBB################P??????????????????????????????????????J?JGJYYYYYBBBYJJ5GJ5#BBBBBBB
+BB#BYYYJJJY5PP5YYY5GBPB##PGB##B###PJ???????????????????????????????????????P5JYYYY5B#PJYYGYYG#BBBBBB
+B#B5YYJY555YYY55YYJYPYJPGJJJGBYJG###P5PJ????????????????????????????????????G5JYYYJPBBJJJP5YP#BBBBBB
+#GY5PYJJJYY?77PBBYP5Y5JJYG555YJJJPGB#PJ???????????????????JYY555555YYJ?????7PPJYYYYJPGJYJGYJG5B#BBBB
+PPG5JJJJJJJYYYY5YYJJJYYJPPJPBG5555YGJ??????????????????J5GBBBBBB#####BBPJ??JBJYYYYY5GJJY5GYPPJYB#B#B
+5GYJJJJJJJJJJJYYYYYYJJJYJYPYYYYJBYPY?????????????????YGB#BBBBBBBBBBBBB###BYG5JYYYYYGJJJYBGP55PYYPBBB
+PPJJJYGGJJJJJJJJYYYYJJJYJJP55JJJYPG?????????????????PBBBBBBBBBBBBBBBBBB#####YJYYYYYGJY5G5YYYY5GYYYPG
+5PJJJJJPP5YJJJJJJYYYY55YJJ5GJ?JP5YP???????????????75#BGPPBB#BBBBBBBB#BBGG#B&YJYYYYYPP5PYYYYYYYY55YYY
+YYJJJJJJJY555YYYYYYYYY5P555JY5PY?5Y7????77??JJ?7?77GBBYYYY55GBB##BBGPYJ??5B#5JJYYYYYYYYYYYYYP5YY5YYY
+YYJJJJJJJJJJJJJJJJJJJJJYYYYYYYJ?557?7?7???Y5555J??7G#5Y5PP5J?JY55YJ??J55YJB#PJJYYYYYYYYYYYYJP5YYYYYY
+YYJJJJJJJJJJJJJJJJJJJJJJJJJ??J?5G7?7J5Y5555P555Y555G#YGBGB#BBGPJ??YPBBGG#PB#BJJYYYYYYYYYYYYJG5YYYYYY
+YYJJJJJJJJJJJJJJJJJJJJJJJJJYY?YB?7?7?Y5PPPP5555555G5B555?BGBGGPJJJGBGBP5Y5GY#YJYYYYYYYYYYYYYB5YYY5PP
+YYJJJJJJJJJJJJJJJY555YYYYJJYJ?PY7?7??J5PPPGPY55YJJGGB55YJ5PYJYY?YJJJJGP5J5PYGP?JYYYYYYYYYYJY#PPGPP55
+YYJJJJJJJJJJJJJJJJYYYYYYYJJJJYB?7?7?555PPPPPYJ5PPPGGG5YYYJ????J?5??JJJJ??GGP?BYJYYYYYYYYJY5GBP55Y5PP
+YYJJJJJJJJJJJJJJJJJJJJJJJJJJ?PP?JJYY5P5PGP5YJYY5P5YGGGYYJ?J??JYJYJ??????YG5?7YB?JJYYJJJYPGG5Y55PPP55
+YYJJJJJJJJJJJJJJJJJJJJJJJJJJ?GJ75PPGGGPGGGGPPGPY5P5PP#5JJJ?JJJYYJJJJ???JG5?7?5#5YYYYY5GBP55PPP5YYYYY
+YYJJJJJJJJJJJJJJJJJJJJJJJJJJ?G?77Y55Y5PGGPGGGP55PPYJYBBY?JJJYYYJYY5JJJJGGPGP55YYYYYYYY5555GGGPPP5YYY
+PYYJJJJJJJJJJJJJJJJJJJJJJJJJ?G??55PP5555P5Y5Y5G5JJJ?PGGG5J?JY555YYY5YY5PPP5YYYYJJJJJ?????JYJJ?JY5PPP
+&PYJJJJJJJJJJJJJJJJJJJJJJJJJ?G?5GGGP5P55P55PG5JJJJJ?PGPPBBPP5J??????????????JJJYYYYY55J???????????J5
+5PGYJJJJJJJJJJJJJJJJJJJJJJJJ?G?J5GGGPPPGGPBPJJJJJJ?J#BGBBBP5YYYY55YYYYJJJ????????????JY55J???????YYJ
+??5GYJJJJJJJJJJJJJJJJJJJJJJJJBBGPPGGGGPP5G5?JJJJJY5P5YJJJJJJJJJJJJJJJJYY5555YJ????J?????J5P5Y????JYJ
+JJ?YG5JJJJJJJJJJJJJJJJJJJJJ?Y#BBB#BG5YJ?P5YY5PPPP5YJ??????????????????????JJY55J???????JYJJY555J????
+JJJ?JPGYJ?JJJJJJJJJJJJJJJJ??P#BBBBBBB#GJYYY5PPYJY55YYYYYYY5YYJJ???????????????J5PYJ????5YJJJJ?JG55YY
+JJ?J??JPP5JJ???JJJJJJJ????YGBBBBBBBBBB#B5PPYJ??JJJ???????JJJYY5P5YJJ?????????YYJJYPPYJ??JJ???J5P5555
+JYYYYYYY5GP555YJJJJJJJYY5GBBBBBBBBBBB#BPYJ????JJ??????????????JJJJY555YJ?????5YJJJJJJ5GYYYY5PP5YYYYY
+!!!!7777!!7J5Y?JBBBBBB###BBBBBBBBBB#G5J??J???J?JJJJJJJJJJJJ??J???JYYJJ5PPPYY??JJ???JYPP55555YYYYYYYY
+!!!!!!!7??J?7!!7#BBBB#BBBBBBBBBB#BPYJ??JJJJJY5555PPPPPPP5PPPYJJJJYYJJYYJJG5PP55YY55P55YYYYYYYYYYYYYY
+!!!!!!!77!!!!!!?#BBBBBBBBBBBB##B5J???JJJJYPGBGP555555PPGGGGGBP5YYYYYYYYYPPYYY555555YYYYYYYYYYYYYYYYY
+!!!!!!!77!!!!!!?#BBBBBBBBBBBB##B5J???JJJJYPGBGP555555PPGGGGGBP5YYYYYYYYYPPYYY555555YYYYYYYYYYYYYYYYY
+EOF
+
+filename=$1
+shift
+
+show_help() {
+    cat << EOF
+
+Pokemon Usage Analysis Tool
+Usage: ./script.sh <file.csv> [OPTIONS]
+
+Options:
+  -h, --help          Show this help screen
+  -i, --info          Display highest adjusted and raw usage
+  -s, --sort <col>    Sort by column (name, usage, raw, hp, atk, def, spatk, spdef, speed)
+  -g, --grep <name>   Search for a specific Pokemon by name
+  -f, --filter <type> Filter Pokemon by type
+
+Examples:
+  ./script.sh pokemon_usage.csv --info
+  ./script.sh pokemon_usage.csv --sort usage
+  ./script.sh pokemon_usage.csv --grep Pikachu
+  ./script.sh pokemon_usage.csv --filter Electric
+EOF
+}
+
+if [ "$#" -eq 0 ]; then
+    echo "Error: No arguments provided. Use -h or --help for more information."
+    exit 1
+fi
+
+info() {
+    echo "Displaying highest adjusted and raw usage..."
+}
+
+sortalpha() {
+    if [ -z "$1" ]; then
+        echo "Error: No sorting column provided. Use -h or --help."
+        exit 1
+    fi
+    echo "Sorting by column: $1"
+}
+
+search_pokemon() {
+    if [ -z "$1" ]; then
+        echo "Error: No Pokemon name provided. Use -h or --help."
+        exit 1
+    fi
+    echo "Searching for Pokemon: $1"
+}
+
+filter() {
+    if [ -z "$1" ]; then
+        echo "Error: No filter option provided. Use -h or --help."
+        exit 1
+    fi
+    echo "Filtering by type: $1"
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -i|--info)
+            info
+            ;;
+        -s|--sort)
+            shift
+            sortalpha "$1"
+            ;;
+        -g|--grep)
+            shift
+            search_pokemon "$1"
+            ;;
+        -f|--filter)
+            shift
+            filter "$1"
+            ;;
+        *)
+            echo "Unknown Argument: $1"
+            echo "Use -h or --help for more information."
+            exit 1
+            ;;
+    esac
+    shift
+}
+```
