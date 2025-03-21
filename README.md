@@ -331,7 +331,7 @@ done
 *)
 	printf "Unknown Argument\n" >&2
 ```
-5. Memastikan program dapat menangkap dan memproses argumen yang tidak diinginkan. Program juga dibuat agar menampilkan pesan error apabila kasus ini terjadi.
+5. Memastikan program dapat menangkap dan memproses argumen yang tidak diinginkan. Program juga dibuat agar mengoutput pesan error ke stderr apabila kasus ini terjadi.
 
 Secara keseluruhan, program pada bagian pendahuluan terlihat seperti ini:
 ```sh
@@ -634,7 +634,7 @@ awk '
             }
         ' /proc/*/stat 2>/dev/null
 ```
-5. Mengambil data proses-proses yang ada dengan status running, sleeping, zombie, stopped, dan idle yang berada di dalam folder /proc/ kemudian menghitung jumlah proses secara keseluruhan dan pada masing-masing kategori status sebelum mengoutputnya ke stdout dengan warna color index ID 66.
+5. Mengambil data proses-proses yang ada dengan status running, sleeping, zombie, stopped, atau idle yang berada di dalam folder /proc/ kemudian menghitung jumlah proses secara keseluruhan dan pada masing-masing kategori status sebelum mengoutputnya ke stdout dengan warna color index ID 66.
 
 Adapun `/proc/*/stat 2>/dev/null` digunakan untuk mengatasi proses-proses yang tidak bisa dibaca statusnya (stderr) dan membuangnya ke /dev/null.
 ```sh
@@ -659,6 +659,71 @@ printf "\e[38;5;174m\n\nPID\tUSER\tSTATUS\t%%CPU\tCOMMAND\n\n"
 limit=0
 ```
 8. Mendeklarasikan variabel limit yang merepresentasikan batas seberapa banyak proses yang dapat ditampilkan ke window terminal.
+```sh
+for proc in /proc/*/stat
+do
+	status=$( awk '{print $3}' $proc 2>/dev/null)
+	if [ "$status" == "R" ] || [ "$status" == "S" ] || [ "$status" == "Z" ] || [ "$status" == "T" ] || [ "$status" == "I" ]
+	then
+		# ...
+	fi
+	# ...
+done
+```
+9. Mengiterasi untuk setiap proses yang ditemukan di folder /proc/ dengan status running, sleeping, zombie, stopped, atau idle.
+```sh
+pid=$( awk '{print $1}' $proc 2>/dev/null)
+# ...
+cmdname=$(awk '{print $2}' $proc 2>/dev/null)
+# ...
+utime=$(awk '{print $14}' $proc 2>/dev/null)
+stime=$(awk '{print $15}' $proc 2>/dev/null)
+starttime=$(awk '{print $22}' $proc 2>/dev/null)
+```
+10. Mengambil data PID, command name, utime, stime, dan start time setiap proses pada folder /proc/ dan menyimpannya ke variabel masing-masing.
+```sh
+user=$(ls -l $proc | awk '{print $3}' 2>/dev/null)
+```
+11. Mengambil data user yang menjalankan masing-masing proses yang muncul ketika menjalankan command "ls -l" dan menyimpannya ke variabel user.
+```sh
+uptime=$(awk '{print $1}' /proc/uptime)
+```
+12. Mengambil data sistem uptime dalam satuan detik yang berada di dalam file /proc/uptime dan menyimpannya ke variabel uptime.
+```sh
+ticks=$(getconf CLK_TCK)
+```
+13. Mengambil data Hertz (jumlah clock ticks setiap detik) sistem dan menyimpannya ke variabel ticks.
+```sh
+let timespent=$utime+$stime
+elapsedtime=$( printf "scale=1; %s - (%s / %s)\n" $uptime $starttime $ticks | bc)
+cpuusage=$( printf "scale=1; 100 * ((%s / %s) / %s)\n" $timespent $ticks $elapsedtime | bc )
+```
+14. Memproses data untuk mendapatkan CPU Usage suatu proses.
+```sh
+printf "\e[38;5;210m%d\t%s\t%s\t%.1f\t%s\e[K\n" $pid $user $status $cpuusage $cmdname
+```
+15. Mengoutput data PID, User, Status, CPU Usage, dan Command Name setiap proses ke stdout dengan warna color index ID 210.
+```sh
+((limit++))
+```
+16. Menghitung jumlah proses yang sudah ditampilkan di window terminal agar dapat dibatasi banyaknya.
+```sh
+if [ $limit -gt 30 ]
+then
+	break
+fi
+```
+17. Jika proses yang ditampilkan sudah mencapai 30 (arbitrary number, tidak ada alasan teknikal mengapa memilih angka tersebut), maka program tidak akan menampilkan proses selanjutnya pada window terminal. Hal ini dilakukan supaya program bisa memperbarui dirinya sendiri setiap detik tanpa ada kendala.
+```sh
+printf "\e[0m\n"
+```
+18. Mengatur ulang style dan warna terminal ke setelan awal dan membuat line baru.
+```sh
+else
+    printf "Unknown Argument\n" >&2
+fi
+```
+19. Merupakan lanjutan dari elif statement subsoal E, dimana jika value dari variabel "play" tidak memenuhi value if-elif apapun, maka program akan mengoutput pesan error ke stderr.
 
 ### Kendala yang Dialami
 
