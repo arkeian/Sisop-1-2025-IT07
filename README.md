@@ -834,7 +834,8 @@ awk '
 
 ## Soal 4
 
-A.Melihat summary dari data
+### Soal 4.A: Melihat summary dari data
+
 Untuk mengetahui Pokemon apa yang sedang membawa teror kepada lingkungan “Generation 9 OverUsed” anda berusaha untuk membuat sebuah fitur untuk menampilkan nama Pokemon dengan Usage% dan RawUsage paling tinggi.
 
 ```sh
@@ -869,7 +870,8 @@ info() {
 }
 ```
 
-B.Mengurutkan Pokemon berdasarkan data kolom
+### Soal 4.B: Mengurutkan Pokemon berdasarkan data kolom
+
 Untuk memastikan bahwa anda mengetahui kondisi lingkungan “Generation 9 OverUsed”, anda berusaha untuk membuat sebuah fitur untuk sort berdasarkan:
 Usage%
 RawUsage
@@ -918,9 +920,7 @@ sortalpha() {
 }
 ```
 
-
-
-c. Fitur Pencarian Pokémon Berdasarkan Nama (--grep)
+### Soal 4.C: Fitur Pencarian Pokémon Berdasarkan Nama (--grep)
 
 Fitur ini bertujuan untuk mencari Pokémon tertentu berdasarkan namanya dalam dataset pokemon_usage.csv, dengan memastikan pencarian tidak menampilkan hasil yang tidak relevan. Hasil pencarian juga akan diurutkan berdasarkan Usage% untuk mempermudah analisis.
 
@@ -948,7 +948,7 @@ Untuk menjalankan program tersebut, gunakan command seperti berikut :
 
 	./pokemon_analysis.sh pokemon_usage.csv --grep Chansey
  
-d. Mencari Pokémon Berdasarkan Type dan Sort Berdasarkan Usage%
+### Soal 4.D: Mencari Pokémon Berdasarkan Type dan Sort Berdasarkan Usage%
 
 Fitur --filter ini memungkinkan pencarian Pokémon berdasarkan Type1 atau Type2, dan hasilnya akan diurutkan berdasarkan Usage% (kolom ke-2).
 
@@ -975,10 +975,18 @@ fi
 Untuk menjalankan program tersebut, gunakan command seperti berikut :
 
 	./pokemon_analysis.sh pokemon_usage.csv --filter Fighting
- 
+
+### Kendala yang Dialami
+1. Pada awalnya subsoal B, akan dibuat murni menggunakan bash tanpa menggunakan command eksternal seperti "sort". Gambaran implementasinya adalah data diurutkan dengan menggunakan sorting algorithm seperti Bubble Sort. Namun pada kenyataannya, dalam mewujudkan implementasi, terdapat berbagai kendala, seperti:
+ * Kerumitan dan ketidakpahaman mengenai bahasa bash untuk menerapkan sorting algorithm layaknya di C/C++.
+ * Keterbatasan waktu untuk mengerjakannya.
+ * Kerumitan dalam mengimplementasi program untuk mengcompare string secara lexicographic pada bash.
+ * Kerumitan dalam mendeklarasikan dan menerapkan array jika data suatu kolom diambil menggunakan command "awk". 
+Sehingga berdasarkan faktor-faktor tersebut, subsoal B dengan berat hati dialihkan untuk menggunakan command "sort".
+  
 ## REVISI
 
-2.C.“Unceasing Spirit”
+### Soal 2.C: “Unceasing Spirit”
 Karena diperlukan pengecekan keaslian “Player” yang aktif, maka diperlukan sistem untuk pencegahan duplikasi “Player”. Jadikan sistem login/register tidak bisa memakai email yang sama (email = unique), tetapi tidak ada pengecekan tambahan untuk username.
 
 ```sh
@@ -988,8 +996,7 @@ if grep -q "^$email," "$DB_FILE"; then
 fi
 ```
 
-
-4.C & D
+### Soal 4C-F:
 
 ```sh
 #!/bin/bash
