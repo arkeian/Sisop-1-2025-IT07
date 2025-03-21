@@ -996,9 +996,38 @@ if grep -q "^$email," "$DB_FILE"; then
 fi
 ```
 
-### Soal 3.C
+### Soal 3
 
-Soal 3 secara keseluruhan hanya perlu merapikan dan mempercantik aspek estetikanya. Disini, subsoal yang diganti adalah subsoal C karena dari kelima subsoal, bagian ini yang paling terasa kurang ada aspek estetikanya. Adapun subsoal C secara keseluruhan setelah direvisi adalah sebagi berikut:
+Soal 3 secara keseluruhan hanya perlu merapikan dan mempercantik aspek estetikanya. Adapun subsoal secara keseluruhan setelah direvisi adalah sebagi berikut:  
+  
+1. Subsoal B:
+```sh
+elif [ "$play" == "On The Run" ]
+then
+    printf "Loading...\n"
+    length=$COLUMNS
+    let max=$length-7
+    progress=1
+    while true
+    do
+        let randnum=($RANDOM%10)+1
+        randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
+        let percent=$progress*100/$max
+        if [ $percent -gt 100 ]
+        then
+            printf "\nFinished!\n"
+            break
+        else
+            ((progress++))
+            printf "\r[\e[%dG\e[38;5;47m■" $progress
+            printf "\e[%dG\e[0m] %d%%" $max $percent
+            sleep $randinterval
+        fi
+    done
+```
+Secara fungsionalitas, subsoal B tidak berubah. Hanya saja sekarang simbol "■" yang mengindikasikan progress bar mempunyai warna yang berbeda yaitu color index ID 47.  
+  
+2. Subsoal C
 ```sh
 elif [ "$play" == "Time" ]
 then
