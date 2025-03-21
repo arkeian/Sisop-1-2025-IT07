@@ -996,6 +996,24 @@ if grep -q "^$email," "$DB_FILE"; then
 fi
 ```
 
+### Soal 3.C
+
+Soal 3 secara keseluruhan hanya perlu merapikan dan mempercantik aspek estetikanya. Disini, subsoal yang diganti adalah subsoal C karena dari kelima subsoal, bagian ini yang paling terasa kurang ada aspek estetikanya. Adapun subsoal C secara keseluruhan setelah direvisi adalah sebagi berikut:
+```sh
+elif [ "$play" == "Time" ]
+then
+    until read -n 1 -t 1 -s
+    do
+        printf "\e[0;0H"
+        clock=$(awk '/rtc_date/ {date=$3} /rtc_time/ {time=$3} END {printf "%s %s", date, time}' /proc/driver/rtc)
+        printf "\e[1;38;5;243m┌─────────────────┐\n"
+        printf "\e[1;38;5;160m%s\n" "$clock"
+        printf "\e[1;38;5;243m└─────────────────┘"
+    done
+    printf "\e[0m\n"
+```
+Secara fungsionalitas, subsoal C tidak berubah. Hanya saja terdapat tambahan kotak yang mengelilingi string live clocknya, dan diberi warna color index ID 243. Begitu juga dengan string live clocknya sendiri diberi warna color index ID 160.
+
 ### Soal 4C-F:
 
 ```sh
