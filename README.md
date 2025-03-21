@@ -431,7 +431,9 @@ done
 let randnum=($RANDOM%10)+1
 randinterval=$( printf "scale=1; %s / 10\n" $randnum | bc )
 ```
-6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0,1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float. Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke command "bc" (Basic Calculator) supaya dapat diubah menjadi interval yang sesuai.
+6. Pada setiap iterasi while, variabel randnum akan memiliki value random antara 1-10. Namun, soal meminta intervalnya berada di antara 0,1-1. Tetapi interval ini tidak dapat diimplementasikan langsung pada bash, karena bash tidak mendukung tipe data float.
+
+Oleh karena itu, variable randnum akan dipipe terlebih dahulu ke command "bc" (Basic Calculator) supaya dapat diubah menjadi interval yang sesuai.
 ```sh
 let percent=$progress*100/$max
 ```
@@ -456,7 +458,7 @@ fi
 ```sh
 printf "\e[%dG] %d%%" $max $percent
 ```
-10. Aspek estetika untuk menampilkan "] XX%" di ujung terminal, sekaligus alasan mengapa jumlah karakter maksimum suatu kolom harus dikurangi tepat 7 karakter.
+10. Menampilkan "] XX%" di ujung terminal sebagai aspek estetika, sekaligus alasan mengapa jumlah karakter maksimum suatu kolom harus dikurangi tepat 7 karakter.
 ```sh
 sleep $randinterval
 ```
@@ -511,7 +513,7 @@ Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, d
 ```sh
 awk '/rtc_date/ {date=$3} /rtc_time/ {time=$3} END {printf "\r%s %s", date, time}' /proc/driver/rtc
 ```
-3. Mengambil data kolom ketiga dari baris yang terdapat "rtc_date" dan "rtc_time" yang berada di dalam file /proc/driver/rtc kemudian mengoutputnya ke stdout dalam format YYYY-MM-DD HH:MM:SS.
+3. Mengambil data kolom ketiga dari baris yang terdapat "rtc_date" dan "rtc_time" yang berada di dalam file /proc/driver/rtc kemudian mengoutputnya ke stdout dalam format "YYYY-MM-DD HH:MM:SS".
 ```sh
 printf "\n"
 ```
@@ -542,10 +544,89 @@ symbols=("$" "€" "¥" "₤" "£" "¢" "฿" "₱" "₹" "₩" "₿" "₣")
 2. Membuat sebuah array dengan nama symbol yang berisi simbol-simbol mata uang yang akan ditampilkan pada program.
 ```sh
 until read -n 1 -t 0.001 -s
-    do
-        # ...
-    done
+do
+	# ...
+done
 ```
+3. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
+* `-n 1` Command read akan hanya membaca 1 karakter yang diinput oleh user pada command line.
+* `-t 0.001` Command read akan mencoba membaca input dari user (jika ada) setiap 0.001 detik. Digunakan untuk mengatur kecepatan kecepatan program berjalan secara keseluruhan.
+* `-s` Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.  
+  
+Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
+```sh
+printf "\e[%d\n" $LINES
+```
+4. Memindahkan kursor ke baris terakhir pada window terminal dan mengoutput satu karakter newline. Digunakan untuk menggeser layar ke bawah setiap iterasi until untuk menghindari akumulasi simbol pada window terminal.
+```sh
+let randrow=$RANDOM%$LINES+1
+let randcol=$RANDOM%$COLUMNS+1
+```
+5. Memilih posisi kolom dan baris pada window terminal secara random untuk diletakkan simbol.
+```sh
+let randsym=$RANDOM%${#symbols[@]}
+let randclr=($RANDOM%5)+53
+```
+6. Memilih simbol secara random yang ada di dalam array simbol dan memilih warnanya secara random. Pada kasus ini, warna yang dipilih adalah warna dengan color index rentang 53-57 yaitu sebuah gradien warna biru-ungu.
+```sh
+printf "\e[%d;%dH\e[1;38;5;%dm%s" $randrow $randcol $randclr ${symbols[randsym]}
+```
+7. Meletakkan simbol yang dipilih secara random dengan warna random pada kolom dan baris random window terminal. Adapun penjelasan escape sequencenya:
+* `\e[%d;%dH` Escape sequence untuk memindahkan kursor ke kolom dan baris random yang akan mengoutput simbol mata uang ke stdout.
+* `\e[1;38;5;%dm%s` Escape sequence untuk menampilkan simbol mata uang dengan style **bold** dan warna dengan color index ID random.
+```sh
+printf "\e[0m\n"
+```
+8. Mengatur ulang style dan warna terminal ke setelan awal dan membuat line baru.
+
+Secara keseluruhan, program pada bagian 3.D terlihat seperti ini:
+```sh
+elif [ "$play" == "Money" ]
+then
+    symbols=("$" "€" "¥" "₤" "£" "¢" "฿" "₱" "₹" "₩" "₿" "₣")
+    until read -n 1 -t 0.001 -s
+    do
+        printf "\e[%d\n" $LINES
+        let randrow=$RANDOM%$LINES+1
+        let randcol=$RANDOM%$COLUMNS+1
+        let randsym=$RANDOM%${#symbols[@]}
+        let randclr=($RANDOM%5)+53
+        printf "\e[%d;%dH\e[1;38;5;%dm%s" $randrow $randcol $randclr ${symbols[randsym]}
+    done
+    printf "\e[0m\n"
+```
+
+### Soal 3.E
+
+Pada subsoal E, kita diperintahkan untuk membuat sebuah program imitasi ps/top/htop. Adapun langkah implementasinya adalah sebagai berikut:
+```sh
+elif [ "$play" == "Brain Damage" ]
+then
+```
+1. Merupakan lanjutan dari elif statement subsoal D, dimana pada kasus subsoal E, value yang perlu dicompare adalah "Brain Damage".
+```sh
+until read -n 1 -t 1 -s
+do
+        # ...
+done
+```
+2. Menjalankan command "read" yang akan membaca keypress dari user dengan ketentuan sebagai berikut:
+* `-n 1` Command read akan hanya membaca 1 karakter yang diinput oleh user pada command line.
+* `-t 1` Command read akan mencoba membaca input dari user (jika ada) setiap 1 detik.
+* `-s` Input user tidak akan ditampilkan pada command line atau bersifat tersembunyi.
+  
+Selama user tidak melakukan keypress maka command "read" tidak akan terpenuhi, dan statement "until" akan terus berjalan.
+```sh
+printf "\e[0;0H"
+```
+3. Memindahkan kursor ke kolom ke-0 dan baris ke-0 (Posisi home kursor).
+```sh
+awk '{printf "\033[1;38;5;30mSystem Uptime: %02d:%02d:%02d:%02d\n", $1/3600/24, $1/3600%24, $1/60%60, $1%60}' /proc/uptime
+```
+3. Mengambil data sistem uptime dalam satuan detik yang berada di dalam file /proc/uptime kemudian mengolahnya untuk mendapatkan jumlah hari, jam, menit, dan detik yang sesuai sebelum mengoutputnya ke stdout dalam format "System Update: DD:HH:MM:SS".
+
+Adapun `\033[1;38;5;30m` merupakan escape sequence untuk menampilkan output dengan style **bold** dan warna dengan color index ID 30 dalam format octal (`\033`), karena command "awk" tidak mendukung format `\e` milik C.
+
 ### Kendala yang Dialami
 
 1. Pada statement if-else, awalnya perbandingan dilakukan menggunakan comparison operator "-eq". Sedangkan operator tersebut hanya bisa digunakan untuk variabel yang bash anggap sebagai integer. Untuk membandingkan string, maka diperlukan operator yang berbeda yaitu "==".
