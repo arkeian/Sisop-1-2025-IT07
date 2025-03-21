@@ -558,6 +558,92 @@ until read -n 1 -t 0.001 -s
 
 ## Soal 4
 
+A.Melihat summary dari data
+Untuk mengetahui Pokemon apa yang sedang membawa teror kepada lingkungan “Generation 9 OverUsed” anda berusaha untuk membuat sebuah fitur untuk menampilkan nama Pokemon dengan Usage% dan RawUsage paling tinggi.
+
+```sh
+#!/bin/bash
+
+clear
+
+filename=$1
+shift
+
+info() {
+    maxadj=0
+    maxraw=0
+    {
+        read header
+        while IFS="," read pokemon adjusage rawusage _
+        do
+            floatadj=${adjusage%"%"}
+            if (( $(echo "$floatadj > $maxadj" |bc -l) ))
+            then
+                maxadj=$floatadj
+                pokemon1=$pokemon
+            fi
+            if [ $rawusage -gt $maxraw ]
+            then
+                maxraw=$rawusage
+                pokemon2=$pokemon
+            fi
+        done
+    } < $filename
+    printf "Highest Usage by Winrate: %s with %s%%\nHighest Raw Usage: %s with %s appearance\n" "$pokemon1" $maxadj "$pokemon2" $maxraw
+}
+```
+
+B.Mengurutkan Pokemon berdasarkan data kolom
+Untuk memastikan bahwa anda mengetahui kondisi lingkungan “Generation 9 OverUsed”, anda berusaha untuk membuat sebuah fitur untuk sort berdasarkan:
+Usage%
+RawUsage
+Nama
+HP
+Atk
+Def
+Sp.Atk
+Sp.Def
+Speed
+```sh
+sortalpha() {
+    {
+        read header
+        printf "%s\n" $header
+        case "$1" in
+            usage)
+                sort -t "," -k2 -n -r
+                ;;
+            rawusage)
+                sort -t "," -k3 -n -r
+                ;;
+            name)
+                sort -t "," -k1 -r
+                ;;
+            hp)
+                sort -t "," -k6 -n -r
+                ;;
+            atk)
+                sort -t "," -k7 -n -r
+                ;;
+            def)
+                sort -t "," -k8 -n -r
+                ;;
+            spatk)
+                sort -t "," -k9 -n -r
+                ;;
+            spdef)
+                sort -t "," -k10 -n -r
+                ;;
+            speed)
+                sort -t "," -k11 -n -r
+                ;;
+        esac
+    } <$filename
+}
+```
+
+
+
 c. Fitur Pencarian Pokémon Berdasarkan Nama (--grep)
 
 Fitur ini bertujuan untuk mencari Pokémon tertentu berdasarkan namanya dalam dataset pokemon_usage.csv, dengan memastikan pencarian tidak menampilkan hasil yang tidak relevan. Hasil pencarian juga akan diurutkan berdasarkan Usage% untuk mempermudah analisis.
