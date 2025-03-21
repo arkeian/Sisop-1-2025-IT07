@@ -809,6 +809,29 @@ fi
 
 > Screenshot menampilkan error saat command "awk" menemukan file dalam folder /proc/ yang tidak bisa dibaca.
 
+4. Kendala Lain:
+* Program subsoal E akan menjadi lambat bahkan tidak berfungsi sebagaimana mestinya apabila program yang ada jumlahnya sangat banyak (Pada kasus ini ratusan). Oleh karena itu, dibuatlah sebuah arbitrary limit untuk menampilkan hanya 10 proses yang sedang berjalan saja.
+* Program:
+```sh
+awk '
+	{if ($3 == "R" || $3 == "S" || $3 == "Z" || $3 == "T" || $3 == "I") {count[$3]++;total++}}
+	# ...
+' /proc/*/stat 2>/dev/null
+```
+akan memiliki output berbeda jika ditulis seperti ini:
+```sh
+awk '
+	{
+		if ($3 == "R" || $3 == "S" || $3 == "Z" || $3 == "T" || $3 == "I") {
+			count[$3]++
+			total++
+		}
+	}
+	# ...
+' /proc/*/stat 2>/dev/null
+```
+* Di beberapa tempat, escape sequence carraige return (`\r`), tidak berfungsi dan program akan tetap memperbarui datanya pada line baru. Oleh karena itu, beberapa kasus mengimplementasikan `\e[0;0H` sebagai alternatif.
+
 ## Soal 4
 
 A.Melihat summary dari data
