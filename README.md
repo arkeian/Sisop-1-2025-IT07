@@ -578,7 +578,6 @@ if [ "$COMMAND" == "--grep" ]; then
 
     head -n 1 "$FILE"
 
-    # Cari Pokémon dengan nama dan urutkan berdasarkan Usage%
     awk -F',' -v name="$POKEMON_NAME" 'NR == 1 { next }  # Lewati header tolower($1) == tolower(name) { print } ' "$FILE" | sort -t',' -k2 -nr
 fi
 
@@ -605,10 +604,8 @@ if [ "$COMMAND" == "--filter" ]; then
 
     TYPE_NAME=$3
 
-    # Cetak header
     head -n 1 "$FILE"
 
-    # Cari Pokémon berdasarkan Type dan urutkan berdasarkan Usage%
     awk -F',' -v type="$TYPE_NAME" 'NR == 1 { next }  # Lewati header tolower($4) == tolower(type) || tolower($5) == tolower(type) { print } ' "$FILE" | sort -t',' -k2 -nr
 fi
 ```
